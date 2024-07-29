@@ -4,7 +4,6 @@ import json
 import logging, time
 
 
-
 def get_group(group_id,url):
     response = httpx.get(url)
     if response.status_code == 200:
@@ -19,15 +18,6 @@ def create_group(url, payload):
         return response.json()
     except Exception as e:
         return {}
-
-
-# def delete_group(url,payload):
-#     try:
-#         response = httpx.delete(url,params=payload)
-#         return response.json()
-#     except Exception as e:
-#         print(f"Error in delete_group: {str(e)}")
-#         return {}
 
 
 def delete_group(url, params_data):
@@ -63,6 +53,7 @@ def retry_operation(operation, max_retries=3, *args, **kwargs):
         sleep_time = exponential_backoff(retry_count)
         time.sleep(sleep_time)
     return None
+
 
 def exponential_backoff(retry_count):
     return 2 ** retry_count + random.uniform(0, 1)

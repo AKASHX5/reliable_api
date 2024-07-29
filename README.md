@@ -64,3 +64,5 @@ def group_two():
 - iterating the list of nodes asynchornusly 
 - using dataclass to add typing
 - sending alert to slack when the pod goes down.
+### Running the unittest
+-  `python -m unittest discover`

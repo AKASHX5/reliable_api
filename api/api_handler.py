@@ -50,17 +50,6 @@ def create_group_api():
             return jsonify({"message": "failed to create in all nodes"}), 400
 
         for url in successful_create:
-            retry_count = 0
-            # while retry_count < 3:
-            #     try:
-            #         response = delete_group(url, request_data)
-            #         if response.get('status') == 200:
-            #             break
-            #     except Exception as e:
-            #         print(f"Error deleting group at {url}: {str(e)}")
-            #     retry_count += 1
-            #     sleep_time = exponential_backoff(retry_count)
-            #     time.sleep(sleep_time)
             response = retry_operation(delete_group, 3, url, request_data)
             if response is None or response.get('status') != 200:
                 return jsonify(

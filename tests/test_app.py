@@ -153,5 +153,6 @@ class TestGroupAPI(unittest.TestCase):
         self.assertEqual(response.json, {
             'message': 'max retry failed for url http://localhost:5001/v1/group/one'})
 
+
 if __name__ == '__main__':
     unittest.main()
