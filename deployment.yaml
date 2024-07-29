@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reliable-api-deployment
+  labels:
+    app: reliable-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reliable-api
+  template:
+    metadata:
+      labels:
+        app: reliable-api
+    spec:
+      containers:
+      - name: reliable-api
+        image: reliable_api:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5008
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5008
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5008
+          initialDelaySeconds: 15
+          periodSeconds: 20
