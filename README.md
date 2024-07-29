@@ -1,4 +1,4 @@
-##ASUMPTIONS:
+## ASUMPTIONS:
     The server has endpoint like below which handles both POST and DELETE request
 ```python
 @routes.route('/v1/group/two', methods=['POST',"DELETE"])
@@ -30,7 +30,7 @@ def group_two():
     httpx does not support adding body to the request so the request is parsed 
     and a url like http://localhost:5001/v1/group/one?groupId=123 is constructed to perform the delete operation
 
-#SOLUTION
+## SOLUTION
     Based on the assumptions the solutions in designed like mentioned below
     - A create_group or delete api is called with the json data
     - it iterated through the list of nodes and performs action
@@ -38,7 +38,7 @@ def group_two():
     - if it fails to perform rollback there is a retry mechanism which the user can design on how many times the system should try to perform the action
     - and the retry is backed with exponential backoff algorithm to ensure network congestion taken care of
 
-##TESTING STRATIGIES
+## TESTING STRATIGIES
 
 #### Test Cases for create_group_api
 - Test Case: Successful Creation of Group in All Nodes
