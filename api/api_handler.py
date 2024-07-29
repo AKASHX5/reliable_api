@@ -30,7 +30,7 @@ def create_group_api():
             f"{BASE_URL}/v1/group/three"
         ]
 
-        successful_create = []
+        successful_create_list = []
         request_data = {"groupId": data}
 
         for url in node_list:
@@ -40,16 +40,16 @@ def create_group_api():
                 response = create_group(url, payload=request_data)
                 print("dd",response)
                 if response.get('status') == 200:
-                    successful_create.append(url)
+                    successful_create_list.append(url)
             except Exception as e:
                 print(f"Error creating group at {url}: {str(e)}")
 
-        if len(successful_create) == len(node_list):
+        if len(successful_create_list) == len(node_list):
             return jsonify({"message": "creation completed in all nodes"}), 200
-        if len(successful_create) == 0:
+        if len(successful_create_list) == 0:
             return jsonify({"message": "failed to create in all nodes"}), 400
 
-        for url in successful_create:
+        for url in successful_create_list:
             response = retry_operation(delete_group, 3, url, request_data)
             if response is None or response.get('status') != 200:
                 return jsonify(
@@ -81,7 +81,7 @@ def delete_group_api():
             f"{BASE_URL}/v1/group/three"
         ]
 
-        successful_delete = []
+        successful_delete_list = []
 
         for url in delete_api:
             print("url",url)
@@ -90,16 +90,16 @@ def delete_group_api():
                 print(response.values())
 
                 if response.get('status') == 200:
-                    successful_delete.append(url)
+                    successful_delete_list.append(url)
             except Exception as e:
                 print(f"Error deleting group at {url}: {str(e)}")
 
-        if len(successful_delete) == len(delete_api):
+        if len(successful_delete_list) == len(delete_api):
             return jsonify({"message": "deletion completed in all nodes"}), 200
-        if len(successful_delete) == 0:
+        if len(successful_delete_list) == 0:
             return jsonify({"message": "failed to delete in all nodes"}), 400
 
-        for url in successful_delete:
+        for url in successful_delete_list:
             response = retry_operation(delete_group, 3, url, data)
             if response is None or response.get('status') != 200:
                 return jsonify(
@@ -114,6 +114,8 @@ def delete_group_api():
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
+
+# for cheking liveliness feature
 @app.route('/healthz', methods=['GET'])
 def health_check():
     return jsonify({"status": "ok"}), 200
